@@ -6,6 +6,10 @@ terraform {
       version = "4.18.0"
     }
   }
+  backend "gcs" {
+    bucket  = "people-app-fourkeys-terraform-state"
+    prefix  = "terraform.tfstate"
+  }
 }
 
 resource "google_project_service" "run_api" {
