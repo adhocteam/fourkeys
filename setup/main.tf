@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/google"
       version = "4.18.0"
     }
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = ">= 4.0.0, < 5.0.0"
+    }
   }
   backend "gcs" {
     bucket  = "people-app-fourkeys-terraform-state"
