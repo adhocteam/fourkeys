@@ -27,6 +27,9 @@ resource "google_cloud_run_service" "dashboard" {
     latest_revision = true
   }
   metadata {
+    annotations = {
+      "run.googleapis.com/ingress" = "internal-and-cloud-load-balancing"
+    }
     labels = { "created_by" : "fourkeys" }
   }
   autogenerate_revision_name = true
@@ -68,9 +71,9 @@ module "grafana-loadbalancer" {
       custom_response_headers = null
 
       iap_config = {
-        enable               = false
-        oauth2_client_id     = ""
-        oauth2_client_secret = ""
+        enable               = true
+        oauth2_client_id     = google_iap_client.main.client_id
+        oauth2_client_secret = google_iap_client.main.secret
       }
       log_config = {
         enable      = false
@@ -78,6 +81,17 @@ module "grafana-loadbalancer" {
       }
     }
   }
+}
+
+# Creates the internal facing OAuth consent screen
+resource "google_iap_brand" "main" {
+  support_email     = "infrastructure.admin@adhocteam.us"
+  application_title = "People App FourKeys"
+}
+
+resource "google_iap_client" "main" {
+  display_name = "fourkeys-grafana-dashboard"
+  brand        = google_iap_brand.main.name
 }
 
 resource "google_compute_region_network_endpoint_group" "serverless_neg" {
