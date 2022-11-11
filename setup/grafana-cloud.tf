@@ -12,8 +12,14 @@ resource "google_service_account" "grafana" {
 
 
 # Grant the SA IAM permissions to view Cloud monitoring
-resource "google_project_iam_member" "grafana_cloud_monitor_access" {
+resource "google_project_iam_member" "grafana_cloud_bq_role_access" {
   project = var.google_project_id
   role    = "roles/bigquery.user"
+  member  = "serviceAccount:${google_service_account.grafana.email}"
+}
+
+resource "google_project_iam_member" "grafana_cloud_bq_data_access" {
+  project = var.google_project_id
+  role    = "roles/bigquery.dataViewer"
   member  = "serviceAccount:${google_service_account.grafana.email}"
 }
