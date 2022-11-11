@@ -7,6 +7,6 @@ output "event_handler_secret" {
   sensitive = true
 }
 
-output "dashboard_endpoint" {
-  value = "${module.dashboard_service.dashboard_endpoint}/d/yVtwoQ4nk/four-keys?orgId=1"
-}
+# output "dashboard_endpoint" {
+#   value = "${module.dashboard_service.dashboard_endpoint}/d/yVtwoQ4nk/four-keys?orgId=1"
+# }
