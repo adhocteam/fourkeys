@@ -80,8 +80,7 @@ def publish_to_pubsub(source, msg, headers):
             topic_path, data=msg, headers=json.dumps(headers)
         )
 
-        exception = future.exception()
-        if exception:
+        if exception := future.exception():
             raise Exception(exception)
 
         print(f"Published message: {future.result()}")
